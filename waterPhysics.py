@@ -1,4 +1,5 @@
 import bge
+import bpy
 
 GRAVITY = 9.8
 FRICTION = 7
@@ -19,17 +20,16 @@ def submerged(object):
 
 scene = bge.logic.getCurrentScene()
 
-for object in scene.objects:
-    if hasWaterPhysics(object):
-        if submerged(object):
-            # Buoyancy force
-            object.applyForce([0.0, 0.0, object['volume'] * fluid['density'] * GRAVITY],
-                              False)
+for object in bpy.data.groups['waterPhysics']:
+    if submerged(object):
+    # Buoyancy force
+    object.applyForce([0.0, 0.0, object['volume'] * fluid['density'] * GRAVITY],
+                      False)
             
-            # Friction force
-            FrictionVect = object.worldLinearVelocity.copy()
-            FrictionVect.negate()
-            FrictionVect.normalize()
-            object.applyForce(FrictionVect * FRICTION, False)
+    # Friction force
+    FrictionVect = object.worldLinearVelocity.copy()
+    FrictionVect.negate()
+    FrictionVect.normalize()
+    object.applyForce(FrictionVect * FRICTION, False)
                              
         
