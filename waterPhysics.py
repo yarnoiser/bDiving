@@ -1,15 +1,12 @@
 import bge
 import bpy
 
-GRAVITY = 9.8
 FRICTION = 7
 
-def hasWaterPhysics(object):
-    try:
-        object['volume']
-    except:
-        return False
-    return True
+scene = bge.logic.getCurrentScene()
+
+worldConfig = scene['WorldConfig']
+GRAVITY = worldConfig['GRAVITY']
 
 fluid = bge.logic.getCurrentController().owner
 
@@ -17,8 +14,6 @@ def submerged(object):
     fluidZ = fluid.position[2]
     objectZ = object.position[2]
     return (objectZ <= fluidZ)
-
-scene = bge.logic.getCurrentScene()
 
 for object in bpy.data.groups['waterPhysics']:
     if submerged(object):
