@@ -8,7 +8,7 @@ fluid = bge.logic.getCurrentController().owner
 GRAVITY = 9.81
 
 def hasWaterPhysics(obj):
-    return 'waterPhysics' in obj
+    return 'waterPhysics' in obj and obj['waterPhysics'] == True
 
 def compression(depth):
     return 1 + (depth * 0.1) * fuid['density']
@@ -25,7 +25,6 @@ def submerged(object):
 
 for object in scene.objects:
     if hasWaterPhysics(object):
-        print(object['submerged'])
         if submerged(object):
             object['submerged'] = True
             # Buoyancy force
@@ -40,6 +39,4 @@ for object in scene.objects:
             dragVect.negate()
             dragVect.normalize()
             object.applyForce(dragVect * dragMagnitude, False)
-        else:
-            object['submerged'] = False
 
