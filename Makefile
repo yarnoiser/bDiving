@@ -1,4 +1,7 @@
-.PHONY: clean
+.PHONY: clean rmpycache
 
-clean:
+rmpycache:
+	$(RM) -r __pycache__
+
+clean: rmpycache
 	$(RM) *.blend1
