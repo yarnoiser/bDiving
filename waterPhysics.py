@@ -1,17 +1,11 @@
 import bge
 import bpy
 
+fluid = bge.logic.getCurrentController().owner
 scene = bge.logic.getCurrentScene()
 
-fluid = bge.logic.getCurrentController().owner
-
-GRAVITY = 9.81
-
-def hasWaterPhysics(obj):
-    return 'waterPhysics' in obj and obj['waterPhysics'] == True
-
-def compression(depth):
-    return 1 + (depth * 0.1) * fuid['density']
+def pressure(depth, temperature):
+    return depth * fluid['density'] * GRAVITY
 
 def drag(velocity, area, dragCoefficient):
     # drag equation
@@ -23,20 +17,19 @@ def submerged(object):
     objectZ = object.position[2]
     return (objectZ <= fluidZ)
 
-for object in scene.objects:
-    if hasWaterPhysics(object):
-        if submerged(object):
-            object['submerged'] = True
-            # Buoyancy force
-            object.applyForce([0.0, 0.0, object['volume'] * fluid['density'] * GRAVITY],
-                          False)
+for object in scene.waterObjects:
+      if submerged(object):
+          object['submerged'] = True
+          # Buoyancy force
+          object.applyForce([0.0, 0.0, object['volume'] * fluid['density'] * GRAVITY],
+                             False)
             
-            # Friction force
-            dragVect = object.worldLinearVelocity.copy()
-            # assume player is a sphere for drag coefficient
-            # https://en.wikipedia.org/wiki/Drag_coefficient
-            dragMagnitude = drag(dragVect.magnitude, 1, 0.47)
-            dragVect.negate()
-            dragVect.normalize()
-            object.applyForce(dragVect * dragMagnitude, False)
+        # Friction force
+        dragVect = object.worldLinearVelocity.copy()
+       # assume player is a sphere for drag coefficient
+       # https://en.wikipedia.org/wiki/Drag_coefficient
+       dragMagnitude = drag(dragVect.magnitude, 1, 0.47)
+       dragVect.negate()
+       dragVect.normalize()
+       object.applyForce(dragVect * dragMagnitude, False)
 
