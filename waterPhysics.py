@@ -1,12 +1,12 @@
 import bge
 import bpy
-import worldConfig
 
 fluid = bge.logic.getCurrentController().owner
 scene = bge.logic.getCurrentScene()
+world = scene.objects['WorldConfig']
 
 def pressure(depth, temperature):
-    return depth * fluid['density'] * worldConfig.GRAVITY
+    return depth * fluid['density'] * world['GRAVITY']
 
 def drag(velocity, area, dragCoefficient):
     # drag equation
@@ -18,12 +18,12 @@ def submerged(object):
     objectZ = object.position[2]
     return (objectZ <= fluidZ)
 
-for object in worldConfig.waterObjects:
+for object in world['waterPhysicsObjects']:
       if submerged(object):
           object['submerged'] = True
           # Buoyancy force
           object.applyForce([0.0, 0.0, object['volume'] * fluid['density'] * 
-                             worldConfig.GRAVITY],
+                             world['GRAVITY']],
                              False)
             
       # Friction force
