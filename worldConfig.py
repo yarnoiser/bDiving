@@ -1,8 +1,5 @@
 import bge
-
-# True if the object has water physics
-def hasWaterPhysics(obj):
-    return 'waterPhysics' in obj and obj['waterPhysics'] == True
+from waterPhysics import hasWaterPhysics
 
 controller = bge.logic.getCurrentController()
 config = controller.owner

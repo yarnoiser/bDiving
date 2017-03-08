@@ -1,52 +1,5 @@
 import bge
-
-# mols^-1 kilograms^-1
-def GAS_CONSTANT = 8.3144598
-
-# Degrees Celsius
-def ROOM_TEMPERATURE = 20
-
-# Grams/Mol
-def MOLAR_MASS_AIR = 29
-
-# Pascals
-def AIR_PRESSURE_SEA_LEVEL = 101325
-
-def paToBar(pascals):
-    return pascals * 0.00001
-
-def barToPa(bar):
-    return bar * 100000
-
-def pascalsToPsi(pascals):
-    return pascals * 0.000145038
-
-def psiToPa(psi):
-    return psi * 6894.76
-
-def m3ToL(m3):
-    return m3 * 1000
-
-def lToM3(litres)
-    return litres / 1000
-
-def m3ToFt3(m3):
-    return m3 * 35.3147
-
-def ft3ToM3(ft3):
-    return ft3 * 0.0283168
-
-def gToKg(g):
-    return g * 1000
-
-def kgToG(kg):
-    return g / 1000
-
-def gToLbs(g):
-    return g * 0.00220462
-
-def lbsToG(lbs):
-    return lbs * 453.592
+from waterPhysics import *
 
 class AirCylinder:
     # maxPressure: pascals
@@ -64,7 +17,7 @@ class AirCylinder:
 
     # Mass in grams
     def mass(self):
-        return (self.moles * MOLAR_MASS_AIR) + emptyMass
+        return (self.moles * MOLAR_MASS_AIR) + self.emptyMass
 
     # Fills the cylinder to capacity at the given temperature
     # temperature: degrees celsius
@@ -82,7 +35,7 @@ class AirCylinder:
 # 3000 psi maximum pressure
 # 6 cubic foot volume
 # 2.6 pounds empty
-genericCylinder = AirCylinder(psiToPa(3000), ftToM3(6), lbsToG(2.6))
+genericCylinder = AirCylinder(psiToPa(3000), ft3ToM3(6), lbsToG(2.6))
 
 class BCD:
     # minVolume: meters cubed
@@ -145,10 +98,8 @@ class BCD:
 # 500 grams empty
 genericBcd = BCD(0.1, 0.4, 500)
 
-def equip(self, bcd, airCylinder, weight):
-    self.bcd = bcd
-    self.airCylinder = airCylinder
-    self.weight = weight
-
-bge.types.KX_GameObject.equip = equip
+def equip(diver, bcd, airCylinder, weight):
+    diver['bcd'] = bcd
+    diver['airCylinder'] = airCylinder
+    diver['weight'] = weight
 
