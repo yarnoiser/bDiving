@@ -21,4 +21,3 @@ for obj in world['waterPhysicsObjects']:
           dragVect.negate()
           dragVect.normalize()
           obj.applyForce(dragVect * dragMagnitude, False)
-

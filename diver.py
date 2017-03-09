@@ -12,7 +12,8 @@ diver['volume'] = diver['baseVolume'] \
                                         , ROOM_TEMPERATURE) \
                   + diver['airCylinder'].volume
 
-#diver.mass = diver['baseMass'] \
-#             + diver['bcd'].mass() \
-#             + diver['airCylinder'].mass() \
-#             + diver['weight']
+diver.mass = (diver['baseMass'] \
+             + diver['bcd'].mass() \
+             + diver['airCylinder'].mass() \
+             + diver['weight']) \
+             / 1000
