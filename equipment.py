@@ -22,14 +22,23 @@ class AirCylinder:
     # Fills the cylinder to capacity at the given temperature
     # temperature: degrees celsius
     def fill(self, temperature):
-        self.moles = (maxPressure * volume) / (GAS_CONSTANT * temperature)
+        self.moles = (self.pressure(temperature) * self.volume) / (GAS_CONSTANT * temperature)
 
-    def fill(self):
+    def fillDefualt(self):
         self.fill(ROOM_TEMPERATURE)
 
     # empties the cylinder
     def empty(self):
         self.moes = 0.0
+
+    # removes air from the cylinder
+    # moles: air to remove in moles
+    def removeAir(self, moles):
+        newAir = self.moles - moles
+        if (newAir < 0):
+            self.moles = 0
+        else:
+            self.moles = newAir
 
 # Generic Cylinder
 # 3000 psi maximum pressure
@@ -59,7 +68,8 @@ class BCD:
         return (self.moles * MOLAR_MASS_AIR) + self.emptyMass
 
     def molesToCapacity(self, pressure, temperature):
-        return ((pressure * volume) / (GAS_CONSTANT * temperature)) - self.moles
+        return ((pressure * self.volume(pressure, temperature)) \
+               / (GAS_CONSTANT * temperature)) - self.moles
 
     # Add's air to the BCD
     # Returns amount of air released due to overfilling in moles
@@ -86,7 +96,7 @@ class BCD:
 
     # fills BCD to capacity at this pressure and temperature
     def fill(self, pressure, temperature):
-        self.moles += self.molesToCapacity(self, pressure, temperature)
+        self.moles += self.molesToCapacity(pressure, temperature)
 
     # empties all air out of the BCD
     def empty(self):
@@ -100,6 +110,8 @@ genericBcd = BCD(0.1, 0.4, 500)
 
 def equip(diver, bcd, airCylinder, weight):
     diver['bcd'] = bcd
+    bcd.fill(AIR_PRESSURE_SEA_LEVEL, ROOM_TEMPERATURE)
     diver['airCylinder'] = airCylinder
+    airCylinder.fill(ROOM_TEMPERATURE)
     diver['weight'] = weight
 
