@@ -22,8 +22,8 @@ diver.mass = (diver['baseMass'] \
 
 # BCD Controls
 def inflate(moles):
-    diver['airCylinder'].removeAir(moles)
-    diver['bcd'].addAir(moles, currentPressure, currentTemperature)
+    fromTank = diver['airCylinder'].removeAir(moles)
+    diver['bcd'].addAir(fromTank, currentPressure, currentTemperature)
 
 def deflate(moles):
     diver['bcd'].removeAir(moles)
@@ -31,8 +31,6 @@ def deflate(moles):
 sensors = diver.sensors
 if sensors['Mouse Left'].triggered:
     inflate(1000)
-    print("inflate")
     
 if sensors['Mouse Right'].triggered:
     deflate(1000)
-    print("deflate")

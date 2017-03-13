@@ -37,8 +37,10 @@ class AirCylinder:
         newAir = self.moles - moles
         if (newAir < 0):
             self.moles = 0
+            return moles + newAir
         else:
             self.moles = newAir
+            return moles
 
 # Generic Cylinder
 # 3000 psi maximum pressure
@@ -91,8 +93,10 @@ class BCD:
         newAir = self.moles - moles
         if (newAir < 0):
             self.moles = 0
+            return moles + newAir
         else:
             self.moles = newAir
+            return moles
 
     # fills BCD to capacity at this pressure and temperature
     def fill(self, pressure, temperature):
