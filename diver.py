@@ -24,17 +24,17 @@ def getDebugInfo(diver):
     return "depth:\t\t\t" + str(diver['depth']) \
        + "\npressure:\t\t" + str(diver['pressure']) \
        + "\ntemperature:\t\t" + str(diver['temperature']) \
-       + "\n" \
        + "\nTotal Mass:\t\t" + str(diver.mass) \
+       + "\n" \
        + "\nBase Mass:\t\t" + str(diver['baseMass']) \
-       + "\nAir Cylinder Mass:\t" + str(diver['airCylinder'].mass()) \
-       + "\nBCD Mass:\t\t" + str(diver['bcd'].mass()) \
-       + "\n" \
-       + "\nAir Cylinder Moles:\t" + str(diver['airCylinder'].moles) \
-       + "\nBCD Moles:\t\t" + str(diver['bcd'].moles) \
-       + "\n" \
        + "\nBase Volume:\t\t" + str(diver['baseVolume']) \
+       + "\n" \
+       + "\nAir Cylinder Mass:\t" + str(diver['airCylinder'].mass()) \
+       + "\nAir Cylinder Moles:\t" + str(diver['airCylinder'].moles) \
        + "\nAir Cylinder Volume:\t" + str(diver['airCylinder'].volume) \
+       + "\n" \
+       + "\nBCD Mass:\t\t" + str(diver['bcd'].mass()) \
+       + "\nBCD Moles:\t\t" + str(diver['bcd'].moles) \
        + "\nBCD Volume:\t\t" + str(diver['bcd'].volume(diver['pressure']
                                                      , diver['temperature']))
                                                      
