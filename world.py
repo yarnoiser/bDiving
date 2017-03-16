@@ -1,8 +1,36 @@
 import bge
+from waterPhysics import hasWaterPhysics
 
-world = bge.logic.getCurrentController().owner
+controller = bge.logic.getCurrentController()
+world = controller.owner
+scene = bge.logic.getCurrentScene()
 
-for obj in world['worldPhysicsObjects']:
-  obj.applyForce([0.0, 0.0, 0 - (obj.mass * world['GRAVITY'])])
+def hasWorldPhysics(obj):
+  return 'worldPhysics' in obj and obj['worldPhysics'] == True
+
+def init():
+    # set gravity constant available to other scripts
+    world['GRAVITY'] = 9.81
+    # set world's gravity to 0 (we are implementing our own)
+    bge.logic.setGravity([0.0, 0.0, 0.0])
+
+    # get list of objects that have worldPhysics
+    worldPhysicsList = []
+    for obj in scene.objects:
+     if hasWorldPhysics(obj):
+       worldPhysicsList.append(obj)
+    world['worldPhysicsObjects'] = worldPhysicsList
+
+    # get list of objects that have waterPhysics
+    waterPhysicsList = []
+    for obj in scene.objects:
+        if hasWaterPhysics(obj):
+          waterPhysicsList.append(obj)
+
+    world['waterPhysicsObjects'] = waterPhysicsList
+
+def update():
+    for obj in world['worldPhysicsObjects']:
+      obj.applyForce([0.0, 0.0, 0 - (obj.mass * world['GRAVITY'])])
 
 

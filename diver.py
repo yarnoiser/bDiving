@@ -1,20 +1,10 @@
 import bge
-from equipment import ROOM_TEMPERATURE
-from waterPhysics import pressure, depth
+from equipment import *
+from waterPhysics import *
 
 world = bge.logic.getCurrentScene().objects['WorldConfig']
 gravity = world['gravity']
 diver = bge.logic.getCurrentController().owner
-
-diver['volume'] = diver['baseVolume'] \
-                  + diver['bcd'].volume(diver['pressure'] \
-                                        , diver['temperature']) \
-                  + diver['airCylinder'].volume
-
-diver.mass = (diver['baseMass'] \
-             + diver['bcd'].mass() \
-             + diver['airCylinder'].mass() \
-             + diver['weight'])
 
 def getDebugInfo(diver):
     return "depth:\t\t\t" + str(diver['depth']) \
@@ -42,15 +32,40 @@ def inflate(moles):
 
 def deflate(moles):
     diver['bcd'].removeAir(moles)
+ 
+def init():
+    diver = bge.logic.getCurrentController().owner
 
-sensors = diver.sensors
-if sensors['Mouse Left'].triggered:
-    inflate(1000)
+    equip(diver, genericBcd(), genericCylinder(), 3000)
+
+    # ensure original volume is preserved for use in future calculations
+    diver['baseVolume'] = diver['volume']
+
+    # ensure original mass is preserved for use in future calculations
+    diver['baseMass'] = diver.mass
+
+    diver['temperature'] = ROOM_TEMPERATURE
+    diver['pressure'] = AIR_PRESSURE_SEA_LEVEL
+
+def update():
+    diver['volume'] = diver['baseVolume'] \
+                      + diver['bcd'].volume(diver['pressure'] \
+                                            , diver['temperature']) \
+                      + diver['airCylinder'].volume
+
+    diver.mass = (diver['baseMass'] \
+                 + diver['bcd'].mass() \
+                 + diver['airCylinder'].mass() \
+                 + diver['weight'])
     
-if sensors['Mouse Right'].triggered:
-    deflate(1000)
+    sensors = diver.sensors
+    if sensors['Mouse Left'].triggered:
+        inflate(1000)
+    
+    if sensors['Mouse Right'].triggered:
+        deflate(1000)
 
-if sensors['P Key'].triggered:
-    print("=================================")
-    print(getDebugInfo(diver))
-    print("=================================")
+    if sensors['P Key'].triggered:
+        print("=================================")
+        print(getDebugInfo(diver))
+        print("=================================")
