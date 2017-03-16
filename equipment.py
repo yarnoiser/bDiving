@@ -37,16 +37,15 @@ class AirCylinder:
         newAir = self.moles - moles
         if (newAir < 0):
             self.moles = 0
-            return moles + newAir
         else:
             self.moles = newAir
-            return moles
 
 # Generic Cylinder
 # 3000 psi maximum pressure
 # 6 cubic foot volume
 # 2.6 pounds empty
-genericCylinder = AirCylinder(psiToPa(3000), ft3ToM3(6), lbsToG(2.6))
+def genericCylinder():
+    return AirCylinder(psiToPa(3000), ft3ToM3(6), lbsToG(2.6))
 
 class BCD:
     # minVolume: meters cubed
@@ -93,10 +92,8 @@ class BCD:
         newAir = self.moles - moles
         if (newAir < 0):
             self.moles = 0
-            return moles + newAir
         else:
             self.moles = newAir
-            return moles
 
     # fills BCD to capacity at this pressure and temperature
     def fill(self, pressure, temperature):
@@ -110,7 +107,8 @@ class BCD:
 # 0.01 m3 empty
 # 0.3 m3 full
 # 500 grams empty
-genericBcd = BCD(0.1, 0.4, 500)
+def genericBcd():
+    return BCD(0.1, 0.4, 500)
 
 def equip(diver, bcd, airCylinder, weight):
     diver['bcd'] = bcd

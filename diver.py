@@ -1,13 +1,10 @@
 import bge
 from equipment import ROOM_TEMPERATURE
-from waterPhysics import pressure
+from waterPhysics import pressure, depth
 
 world = bge.logic.getCurrentScene().objects['WorldConfig']
 gravity = world['gravity']
 diver = bge.logic.getCurrentController().owner
-diver['depth'] = diver.worldPosition[2]
-diver['temperature'] = ROOM_TEMPERATURE
-diver['pressure'] = pressure(gravity, diver['depth'], diver['temperature'])
 
 diver['volume'] = diver['baseVolume'] \
                   + diver['bcd'].volume(diver['pressure'] \
@@ -17,8 +14,7 @@ diver['volume'] = diver['baseVolume'] \
 diver.mass = (diver['baseMass'] \
              + diver['bcd'].mass() \
              + diver['airCylinder'].mass() \
-             + diver['weight']) \
-             / 1000
+             + diver['weight'])
 
 def getDebugInfo(diver):
     return "depth:\t\t\t" + str(diver['depth']) \

@@ -8,6 +8,9 @@ world = scene.objects['WorldConfig']
 for obj in world['waterPhysicsObjects']:
       if submerged(obj, fluid):
           obj['submerged'] = True
+          obj['depth'] = depth(obj, fluid)
+          obj['temperature'] = ROOM_TEMPERATURE
+          obj['pressure'] = pressure(world['GRAVITY'], fluid['density'], obj['depth'])
           # Buoyancy force
           obj.applyForce([0.0, 0.0, obj['volume'] * fluid['density'] * 
                              world['GRAVITY']],
