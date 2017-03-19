@@ -115,7 +115,7 @@ class BCD:
 # 0.3 m3 full
 # 500 grams empty
 def genericBcd():
-    return BCD(0, 0.02, 0)
+    return BCD(0.001, 0.02, 0.3)
 
 def equip(diver, bcd, airCylinder, weight):
     diver['bcd'] = bcd
