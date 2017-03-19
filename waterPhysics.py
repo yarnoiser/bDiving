@@ -3,8 +3,14 @@ DRAG_COEFFICIENT_SPHERE = 0.47
 # mols^-1 kilograms^-1
 GAS_CONSTANT = 8.3144598
 
+def cToK(c):
+    return c + 273.15
+
+def kToC(k):
+    return k - 273.15
+
 # Degrees Celsius
-ROOM_TEMPERATURE = 20
+ROOM_TEMPERATURE = cToK(20)
 
 # g/cm^3
 WATER_DENSITY = 1
@@ -39,17 +45,11 @@ def m3ToFt3(m3):
 def ft3ToM3(ft3):
     return ft3 / 35.3147
 
-def gToKg(g):
-    return g * 1000
+def kgToLbs(kg):
+    return kg * 2.20462
 
-def kgToG(kg):
-    return g / 1000
-
-def gToLbs(g):
-    return g / 453.592
-
-def lbsToG(lbs):
-    return lbs * 453.592
+def lbsToKg(lbs):
+    return lbs / 2.20462
 
 # True if the object has water physics
 def hasWaterPhysics(obj):

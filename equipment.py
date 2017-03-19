@@ -6,6 +6,7 @@ class AirCylinder:
     # volume: meters cubed
     # emptyMass: grams
     def __init__(self, maxPressure, volume, emptyMass):
+        self.maxPressure = maxPressure
         self.volume = volume
         self.emptyMass = emptyMass
         self.moles = 0.0
@@ -22,7 +23,7 @@ class AirCylinder:
     # Fills the cylinder to capacity at the given temperature
     # temperature: degrees celsius
     def fill(self, temperature):
-        self.moles = (self.pressure(temperature) * self.volume) / (GAS_CONSTANT * temperature)
+        self.moles = (self.maxPressure * self.volume) / (GAS_CONSTANT * temperature)
 
     def fillDefualt(self):
         self.fill(ROOM_TEMPERATURE)
@@ -41,11 +42,12 @@ class AirCylinder:
             self.moles = newAir
 
 # Generic Cylinder
+# Based off of "Aluminum S80"
 # 3000 psi maximum pressure
-# 6 cubic foot volume
-# 2.6 pounds empty
+# 0.39 cubic foot volume
+# 35 pounds empty
 def genericCylinder():
-    return AirCylinder(psiToPa(3000), ft3ToM3(6), lbsToG(2.6))
+    return AirCylinder(psiToPa(3000), ft3ToM3(0.39), lbsToKg(35))
 
 class BCD:
     # minVolume: meters cubed
@@ -108,12 +110,12 @@ class BCD:
 # 0.3 m3 full
 # 500 grams empty
 def genericBcd():
-    return BCD(0.1, 0.4, 500)
+    return BCD(0.1, 0.4, 0.5)
 
 def equip(diver, bcd, airCylinder, weight):
     diver['bcd'] = bcd
     bcd.fill(AIR_PRESSURE_SEA_LEVEL, ROOM_TEMPERATURE)
     diver['airCylinder'] = airCylinder
-    airCylinder.fill(ROOM_TEMPERATURE)
+#    airCylinder.fill(ROOM_TEMPERATURE)
     diver['weight'] = weight
 

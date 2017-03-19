@@ -11,11 +11,15 @@ def getDebugInfo(diver):
        + "\npressure:\t\t" + str(diver['pressure']) \
        + "\ntemperature:\t\t" + str(diver['temperature']) \
        + "\nTotal Mass:\t\t" + str(diver.mass) \
+       + "\nTotal Volume:\t\t" + str(diver['volume']) \
+       + "\nGravitational force:\t" + str(diver.mass * gravity) \
+       + "\nBuoyancy force:\t\t" + str(diver['volume'] * 1000 * gravity) \
        + "\n" \
        + "\nBase Mass:\t\t" + str(diver['baseMass']) \
        + "\nBase Volume:\t\t" + str(diver['baseVolume']) \
        + "\n" \
        + "\nAir Cylinder Mass:\t" + str(diver['airCylinder'].mass()) \
+       + "\nAir Cylinder Empty Mass:\t" + str(diver['airCylinder'].emptyMass) \
        + "\nAir Cylinder Moles:\t" + str(diver['airCylinder'].moles) \
        + "\nAir Cylinder Volume:\t" + str(diver['airCylinder'].volume) \
        + "\n" \
@@ -35,8 +39,9 @@ def deflate(moles):
  
 def init():
     diver = bge.logic.getCurrentController().owner
-
-    equip(diver, genericBcd(), genericCylinder(), 3000)
+    equip(diver, BCD(0, 0, 0), genericCylinder(), 4)
+    
+    diver['volume'] = diver.mass / 1000
 
     # ensure original volume is preserved for use in future calculations
     diver['baseVolume'] = diver['volume']
@@ -51,19 +56,19 @@ def update():
     diver['volume'] = diver['baseVolume'] \
                       + diver['bcd'].volume(diver['pressure'] \
                                             , diver['temperature']) \
-                      + diver['airCylinder'].volume
+                      + diver['airCylinder'].volume 
 
     diver.mass = (diver['baseMass'] \
                  + diver['bcd'].mass() \
                  + diver['airCylinder'].mass() \
                  + diver['weight'])
-    
     sensors = diver.sensors
     if sensors['Mouse Left'].triggered:
-        inflate(1000)
+        inflate(1)
     
     if sensors['Mouse Right'].triggered:
-        deflate(1000)
+        print("deflate")
+        deflate(1)
 
     if sensors['P Key'].triggered:
         print("=================================")

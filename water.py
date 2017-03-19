@@ -13,9 +13,9 @@ def update():
               obj['temperature'] = ROOM_TEMPERATURE
               obj['pressure'] = pressure(world['GRAVITY'], fluid['density'], obj['depth'])
               # Buoyancy force
-              obj.applyForce([0.0, 0.0, obj['volume'] * fluid['density'] * 
-                             world['GRAVITY']],
-                             False)
+              buoyancy = obj['volume'] * fluid['density'] * world['GRAVITY']
+              obj.applyForce([0.0, 0.0, buoyancy], False)
+                          
             
               # Friction force
               dragVect = obj.worldLinearVelocity.copy()

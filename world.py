@@ -31,6 +31,6 @@ def init():
 
 def update():
     for obj in world['worldPhysicsObjects']:
-      obj.applyForce([0.0, 0.0, 0 - (obj.mass * world['GRAVITY'])])
+        obj.applyForce([0.0, 0.0, 0 - (obj.mass * world['GRAVITY'])])
 
 
