@@ -32,6 +32,7 @@ def getDebugInfo(diver):
 # BCD Controls
 def inflate(moles):
     fromTank = diver['airCylinder'].removeAir(moles)
+    print(fromTank)
     diver['bcd'].addAir(fromTank, diver['pressure'], diver['temperature'])
 
 def deflate(moles):
@@ -39,7 +40,7 @@ def deflate(moles):
  
 def init():
     diver = bge.logic.getCurrentController().owner
-    equip(diver, BCD(0, 0, 0), genericCylinder(), 4)
+    equip(diver, genericBcd(), genericCylinder(), 0)
     
     diver['volume'] = diver.mass / 1000
 
@@ -56,19 +57,21 @@ def update():
     diver['volume'] = diver['baseVolume'] \
                       + diver['bcd'].volume(diver['pressure'] \
                                             , diver['temperature']) \
-                      + diver['airCylinder'].volume 
+                      + diver['airCylinder'].volume
 
-    diver.mass = (diver['baseMass'] \
+    diver.mass = diver['baseMass'] \
                  + diver['bcd'].mass() \
                  + diver['airCylinder'].mass() \
-                 + diver['weight'])
+                 + diver['weight']
+                         
+#    print(diver['bcd'].volume(diver['pressure'], diver['temperature']))
+
     sensors = diver.sensors
     if sensors['Mouse Left'].triggered:
-        inflate(1)
+        inflate(0.01)
     
     if sensors['Mouse Right'].triggered:
-        print("deflate")
-        deflate(1)
+        deflate(0.01)
 
     if sensors['P Key'].triggered:
         print("=================================")

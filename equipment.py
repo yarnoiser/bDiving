@@ -37,9 +37,12 @@ class AirCylinder:
     def removeAir(self, moles):
         newAir = self.moles - moles
         if (newAir < 0):
+            molesLeft = self.moles
             self.moles = 0
+            return molesLeft
         else:
             self.moles = newAir
+            return moles
 
 # Generic Cylinder
 # Based off of "Aluminum S80"
@@ -71,8 +74,7 @@ class BCD:
         return (self.moles * MOLAR_MASS_AIR) + self.emptyMass
 
     def molesToCapacity(self, pressure, temperature):
-        return ((pressure * self.volume(pressure, temperature)) \
-               / (GAS_CONSTANT * temperature)) - self.moles
+        return ((pressure * self.maxVolume) / (GAS_CONSTANT * temperature)) - self.moles
 
     # Add's air to the BCD
     # Returns amount of air released due to overfilling in moles
@@ -80,22 +82,25 @@ class BCD:
     # pressure: pascals
     # temperature: degrees celsius
     def addAir(self, moles, pressure, temperature):
-       remainingCapacity = self.molesToCapacity(pressure, temperature)
-       if (moles > remainingCapacity):
-           self.moles += remainingCapacity
-           return moles - remainingCapacity
-       else:
-           self.moles += moles
-           return 0.0
+        remainingCapacity = self.molesToCapacity(pressure, temperature)
+        if (moles > remainingCapacity):
+            self.moles += remainingCapacity
+            return moles - remainingCapacity
+        else:
+            self.moles += moles
+            return 0.0
 
     # removes air from bcd
     # moles: air to remove in moles
     def removeAir(self, moles):
         newAir = self.moles - moles
         if (newAir < 0):
+            molesLeft = self.moles
             self.moles = 0
+            return molesLeft
         else:
             self.moles = newAir
+            moles
 
     # fills BCD to capacity at this pressure and temperature
     def fill(self, pressure, temperature):
@@ -110,12 +115,12 @@ class BCD:
 # 0.3 m3 full
 # 500 grams empty
 def genericBcd():
-    return BCD(0.1, 0.4, 0.5)
+    return BCD(0, 0.02, 0)
 
 def equip(diver, bcd, airCylinder, weight):
     diver['bcd'] = bcd
     bcd.fill(AIR_PRESSURE_SEA_LEVEL, ROOM_TEMPERATURE)
     diver['airCylinder'] = airCylinder
-#    airCylinder.fill(ROOM_TEMPERATURE)
+    airCylinder.fill(ROOM_TEMPERATURE)
     diver['weight'] = weight
 
