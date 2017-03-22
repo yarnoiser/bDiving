@@ -2,7 +2,7 @@ import bge
 from equipment import *
 from waterPhysics import *
 
-world = bge.logic.getCurrentScene().objects['WorldConfig']
+world = bge.logic.getCurrentScene().objects['World']
 gravity = world['gravity']
 diver = bge.logic.getCurrentController().owner
 

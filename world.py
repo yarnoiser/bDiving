@@ -21,14 +21,6 @@ def init():
        worldPhysicsList.append(obj)
     world['worldPhysicsObjects'] = worldPhysicsList
 
-    # get list of objects that have waterPhysics
-    waterPhysicsList = []
-    for obj in scene.objects:
-        if hasWaterPhysics(obj):
-          waterPhysicsList.append(obj)
-
-    world['waterPhysicsObjects'] = waterPhysicsList
-
 def update():
     for obj in world['worldPhysicsObjects']:
         obj.applyForce([0.0, 0.0, 0 - (obj.mass * world['GRAVITY'])])

@@ -3,10 +3,19 @@ from waterPhysics import *
 
 fluid = bge.logic.getCurrentController().owner
 scene = bge.logic.getCurrentScene()
-world = scene.objects['WorldConfig']
+world = scene.objects['World']
+
+def init():
+    # get list of objects that have waterPhysics
+    waterPhysicsList = []
+    for obj in scene.objects:
+        if hasWaterPhysics(obj):
+          waterPhysicsList.append(obj)
+
+    fluid['waterPhysicsObjects'] = waterPhysicsList
 
 def update():
-    for obj in world['waterPhysicsObjects']:
+    for obj in fluid['waterPhysicsObjects']:
           if submerged(obj, fluid):
               obj['submerged'] = True
               obj['depth'] = depth(obj, fluid)
